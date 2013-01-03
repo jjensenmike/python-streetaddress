@@ -1,18 +1,6 @@
 from addressconf import Directions, Streets, States, Regexes
 import re
 
-#street_type_regexp = re.compile('|'.join(Streets.STREET_TYPES_LIST.keys()), re.IGNORECASE)
-#number_regexp = re.compile(r'\d+-?\d*')
-#fraction_regexp = re.compile(r'\d+\/\d+')
-#state_regexp = re.compile('|'.join([v.replace(' ','\\s') for v in (States.STATE_CODES.values() + States.STATE_CODES.keys())]), re.IGNORECASE)
-#direct_regexp = re.compile('|'.join(Directions.DIRECTIONAL.keys()) + '|' + '|'.join([(''.join([n+'\\.' for n in v])+'|'+v) for v in sorted(Directions.DIRECTIONAL.values(), key=len, reverse=True)]), re.IGNORECASE)
-#zip_regexp = re.compile(r'(\d{5})(?:-(\d{4}))?')
-#corner_regexp = re.compile(r'(?:\band\b|\bat\b|&|\@)', re.IGNORECASE)
-#unit_regexp = re.compile(r'(?:(su?i?te|p\W*[om]\W*b(?:ox)?|dept|apt|apartment|ro*m|fl|unit|box)\W+|\#\W*)([\w-]+)', re.IGNORECASE)
-#street_regexp = re.compile(r'(?:(?:({0})\W+({1})\b)|(?:({0})\W+)?(?:([^,]+)(?:[^\w,]+({1})\b)(?:[^\w,]+({0})\b)?|([^,]*\d)({0})\b|([^,]+?)(?:[^\w,]+({1})\b)?(?:[^\w,]+({0})\b)?))'.format(direct_regexp.pattern,street_type_regexp.pattern), re.IGNORECASE)
-#place_regexp = re.compile(r'(?:([^\d,]+?)\W+(${0})\W*)?(?:{1})?'.format(state_regexp.pattern,zip_regexp.pattern), re.IGNORECASE)
-#address_regexp = re.compile(r'\A\W*({0})\W*(?:{1}\W*)?{2}\W+(?:{3}\W+)?{4}\W*\Z'.format(number_regexp.pattern,fraction_regexp.pattern,street_regexp.pattern,unit_regexp.pattern,place_regexp.pattern), re.IGNORECASE)
-
 def parse(location):
 	if Regexes.corner.search(location):
 		return parse_intersection(location)
