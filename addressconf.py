@@ -1,3 +1,4 @@
+import re
 class Directions(object):
 	DIRECTIONAL = {
 		"north":"N",
@@ -502,3 +503,18 @@ class States(object):
 		}
 
 	FIPS_STATES = {v:k for k,v in STATE_FIPS.iteritems()}
+
+class Regexes(object):
+	street_type = re.compile('|'.join(Streets.STREET_TYPES_LIST.keys()), re.IGNORECASE)
+	number = re.compile(r'\d+-?\d*')
+	fraction = re.compile(r'\d+\/\d+')
+	state = re.compile('|'.join([v.replace(' ','\\s') for v in (States.STATE_CODES.values() + States.STATE_CODES.keys())]), re.IGNORECASE)
+	direct = re.compile('|'.join(Directions.DIRECTIONAL.keys()) + '|' + '|'.join([(''.join([n+'\\.' for n in v])+'|'+v) for v in sorted(Directions.DIRECTIONAL.values(), key=len, reverse=True)]), re.IGNORECASE)
+	zip_code = re.compile(r'(\d{5})(?:-(\d{4}))?')
+	corner = re.compile(r'(?:\band\b|\bat\b|&|\@)', re.IGNORECASE)
+	unit = re.compile(r'(?:(su?i?te|p\W*[om]\W*b(?:ox)?|dept|apt|apartment|ro*m|fl|unit|box)\W+|\#\W*)([\w-]+)', re.IGNORECASE)
+	street = re.compile(r'(?:(?:({0})\W+({1})\b)|(?:({0})\W+)?(?:([^,]+)(?:[^\w,]+({1})\b)(?:[^\w,]+({0})\b)?|([^,]*\d)({0})\b|([^,]+?)(?:[^\w,]+({1})\b)?(?:[^\w,]+({0})\b)?))'.format(direct.pattern,street_type.pattern), re.IGNORECASE)
+	place = re.compile(r'(?:([^\d,]+?)\W+(${0})\W*)?(?:{1})?'.format(state.pattern,zip_code.pattern), re.IGNORECASE)
+	address = re.compile(r'\A\W*({0})\W*(?:{1}\W*)?{2}\W+(?:{3}\W+)?{4}\W*\Z'.format(number.pattern,fraction.pattern,street.pattern,unit.pattern,place.pattern), re.IGNORECASE)
+	intersection = re.compile('\A\W*{0}\W*?\s+{1}\s+{0}\W+{2}\W*\Z'.format(street.pattern,corner.pattern,place.pattern), re.IGNORECASE)
+
