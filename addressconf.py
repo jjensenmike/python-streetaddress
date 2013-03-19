@@ -9,7 +9,7 @@ class Directions(object):
 		"southwest":"SW",
 		"west":"W",
 		"northwest":"NW"}
-	DIRECTIONAL_CODES = {v:k for k,v in DIRECTIONAL.iteritems()}
+	DIRECTIONAL_CODES = dict((v,k) for k,v in DIRECTIONAL.iteritems())
 
 class Streets(object):
 	STREET_TYPES = {
@@ -377,9 +377,7 @@ class Streets(object):
 		"wy":"way"
 		}
 	
-	STREET_TYPES_LIST = {}
-	for k,v in STREET_TYPES.iteritems():
-		STREET_TYPES_LIST.update({k:True,v:True})
+	STREET_TYPES_LIST = set(STREET_TYPES.keys() + STREET_TYPES.values())
 	
 class States(object):
 	STATE_CODES = {
@@ -444,7 +442,7 @@ class States(object):
 		"wyoming":"WY"
 		}
 	
-	STATE_NAMES = {v:k for k,v in STATE_CODES.iteritems()}
+	STATE_NAMES = dict((v,k) for k,v in STATE_CODES.iteritems())
 
 	STATE_FIPS = {
 		"01":"AL",
@@ -502,10 +500,10 @@ class States(object):
 		"78":"VI"
 		}
 
-	FIPS_STATES = {v:k for k,v in STATE_FIPS.iteritems()}
+	FIPS_STATES = dict((v,k) for k,v in STATE_FIPS.iteritems())
 
 class Regexes(object):
-	street_type = re.compile('|'.join(Streets.STREET_TYPES_LIST.keys()), re.IGNORECASE)
+	street_type = re.compile('|'.join(Streets.STREET_TYPES_LIST), re.IGNORECASE)
 	number = re.compile(r'\d+-?\d*')
 	fraction = re.compile(r'\d+\/\d+')
 	state = re.compile('|'.join([v.replace(' ','\\s') for v in (States.STATE_CODES.values() + States.STATE_CODES.keys())]), re.IGNORECASE)
