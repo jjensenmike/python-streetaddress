@@ -1,4 +1,4 @@
-from addressconf import Directions, Streets, States, Regexes
+from .addressconf import Directions, Streets, States, Regexes
 import re
 
 def parse(location):
@@ -58,7 +58,7 @@ def normalize_address(addr):
 
     addr = dict((k,v) for k,v in addr.items() if v)
 
-    return addr 
+    return addr
 
 def normalize_city(city) :
     if not city :
@@ -70,7 +70,6 @@ def normalize_city(city) :
         else :
             city_list.append(word)
     return ' '.join(city_list)
-            
 
 def normalize_state(state):
     if not state :
@@ -87,7 +86,7 @@ def normalize_street_type(s_type):
         return Streets.STREET_TYPES[s_type.lower()].title()
     elif s_type.lower() in Streets.STREET_TYPES_LIST:
         return s_type.title()
-      
+
 def normalize_directional(direction):
     if not direction :
         return None
@@ -101,5 +100,3 @@ def _upper_if_exists(field) :
         return None
     else :
         return field.upper()
-    
-
